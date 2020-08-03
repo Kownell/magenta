@@ -23,6 +23,7 @@ from magenta.pipelines import statistics
 from note_seq import MetricPerformance
 from note_seq import Performance
 from note_seq import sequences_lib
+from magenta.pipelines.performance_time_embbeding_pipelines import TimeEmbbedingPerformance
 from note_seq.performance_lib import BasePerformance
 from note_seq.performance_lib import NotePerformance
 from note_seq.performance_lib import TooManyDurationStepsError
@@ -238,9 +239,12 @@ def extract_performances(
         stats['performance_discarded_too_many_duration_steps'].increment()
         continue
     elif sequences_lib.is_absolute_quantized_sequence(quantized_sequence):
-      performance = Performance(quantized_sequence, start_step=start_step,
-                                num_velocity_bins=num_velocity_bins,
-                                instrument=instrument)
+      performance = TimeEmbbedingPerformance(quantized_sequence, start_step=start_step,
+                                  num_velocity_bins=num_velocity_bins,
+                                  instrument=instrument)
+#        performance = Performance(quantized_sequence, start_step=start_step,
+#                                num_velocity_bins=num_velocity_bins,
+#                                instrument=instrument)
     else:
       performance = MetricPerformance(quantized_sequence, start_step=start_step,
                                       num_velocity_bins=num_velocity_bins,

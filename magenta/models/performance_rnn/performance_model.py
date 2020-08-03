@@ -21,7 +21,7 @@ from magenta.contrib import training as contrib_training
 from magenta.models.shared import events_rnn_model
 import note_seq
 from note_seq.protobuf import generator_pb2
-
+import magenta.pipelines.performance_time_embbeding_pipelines as timepipe
 # State for constructing a time-varying control sequence. Keeps track of the
 # current event position and time step in the generated performance, to allow
 # the control sequence to vary with clock time.
@@ -335,5 +335,28 @@ default_configs = {
                 note_seq.PitchHistogramPerformanceControlSignal(
                     window_size_seconds=5.0)
             ],
-            optional_conditioning=True)
+            optional_conditioning=True),
+    'timeconditioned_performance_with_dynamics':
+        PerformanceRnnConfig(
+            generator_pb2.GeneratorDetails(
+                id='timeconditioned_performance_with_dynamics',
+                description='time-conditioned Performance RNN'),
+            note_seq.OneHotEventSequenceEncoderDecoder(
+                note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
+            contrib_training.HParams(
+                batch_size=64,
+                rnn_layer_sizes=[512, 512, 512],
+                dropout_keep_prob=1.0,
+                clip_norm=3,
+                learning_rate=0.001),
+            num_velocity_bins=32,
+            control_signals=[
+                timepipe.AbsoluteTimePerformanceControlSignal(
+                    max_dulation = 300,
+                    time_embbeding_bin = 64
+                ),
+                timepipe.RelativeTimePerformanceControlSignal(
+                    time_embbeding_bin = 64
+                )
+            ])
 }
