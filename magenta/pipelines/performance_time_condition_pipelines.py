@@ -5,6 +5,8 @@ from note_seq import encoder_decoder
 from note_seq.performance_lib import PerformanceEvent
 import math
 
+SPRITED = 0
+
 class TimeEmbbedingPerformance(Performance):
   """Time embbeding Performance with absolute timing and unknown meter."""
 
@@ -35,13 +37,16 @@ class TimeEmbbedingPerformance(Performance):
     """
     if hasattr(quantized_sequence,"subsequence_info.start_time_offset"):
         self._start_time_offset = quantized_sequence.subsequence_info.start_time_offset
+        SPRITED += 1
+        if SPRITED % 100 == 0:
+            print("\r{0}".format(SPRITED), end="")
     else:
         self._start_time_offset = 0.0
 
     if hasattr(quantized_sequence,"subsequence_info.end_time_offset"):
-        self._end_time = quantized_sequence.subsequence_info.end_time_offset + self._start_time_offset + quantized_sequence.total_length
+        self._end_time = quantized_sequence.subsequence_info.end_time_offset + self._start_time_offset + quantized_sequence.total_time
     else:
-        self._end_time = self._start_time_offset + quantized_sequence.total_length
+        self._end_time = self._start_time_offset + quantized_sequence.total_time
 
 
     super(TimeEmbbedingPerformance, self).__init__(
