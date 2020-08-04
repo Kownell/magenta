@@ -107,11 +107,11 @@ class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
 
     absolute_time_sequence = []
 
-    for i, event in enumerate(performance):
+    for event in performance:
       assert current_step < max_step, "Max step mast be largest than any dataset"
       absolute_time_sequence.append(current_step/max_step)
-      if performance[j].event_type == PerformanceEvent.TIME_SHIFT:
-        current_step += performance[j].event_value
+      if event.event_type == PerformanceEvent.TIME_SHIFT:
+        current_step += event.event_value
 
     return density_sequence
 
