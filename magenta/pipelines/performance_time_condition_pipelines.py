@@ -61,7 +61,7 @@ class TimeEmbbedingPerformance(Performance):
   @property
   def start_time_offset(self):
       return self._start_time_offset
-
+  @property
   def end_time(self):
       return self._end_time
 
