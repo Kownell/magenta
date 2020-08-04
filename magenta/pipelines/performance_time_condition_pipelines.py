@@ -1,5 +1,5 @@
 from note_seq import Performance
-from note_seq import PerformanceControlSignal
+from note_seq.performance_controls import PerformanceControlSignal
 from note_seq import constants
 from note_seq import encoder_decoder
 from note_seq.performance_lib import PerformanceEvent
