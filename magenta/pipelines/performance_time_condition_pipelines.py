@@ -113,7 +113,7 @@ class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
       if event.event_type == PerformanceEvent.TIME_SHIFT:
         current_step += event.event_value
 
-    return density_sequence
+    return absolute_time_sequence
 
   class AbsoluteTimeOneHotEncoding(encoder_decoder.OneHotEncoding):
     """One-hot encoding for performance note density events.
@@ -185,13 +185,13 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
 
     absolute_time_sequence = []
 
-    for i, event in enumerate(performance):
+    for event in performance:
       assert current_step < end_step, "Max step mast be largest than any dataset"
       absolute_time_sequence.append(current_step/end_step)
-      if performance[j].event_type == PerformanceEvent.TIME_SHIFT:
-        current_step += performance[j].event_value
+      if event.event_type == PerformanceEvent.TIME_SHIFT:
+        current_step += event.event_value
 
-    return density_sequence
+    return absolute_time_sequence
 
   class RelativeTimeOneHotEncoding(encoder_decoder.OneHotEncoding):
     """One-hot encoding for performance note density events.
