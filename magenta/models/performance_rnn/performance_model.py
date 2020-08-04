@@ -21,7 +21,7 @@ from magenta.contrib import training as contrib_training
 from magenta.models.shared import events_rnn_model
 import note_seq
 from note_seq.protobuf import generator_pb2
-import magenta.pipelines.performance_time_embbeding_pipelines as timepipe
+import magenta.pipelines.performance_time_condition_pipelines as timepipe
 # State for constructing a time-varying control sequence. Keeps track of the
 # current event position and time step in the generated performance, to allow
 # the control sequence to vary with clock time.

@@ -23,7 +23,7 @@ from magenta.pipelines import statistics
 from note_seq import MetricPerformance
 from note_seq import Performance
 from note_seq import sequences_lib
-from magenta.pipelines.performance_time_embbeding_pipelines import TimeEmbbedingPerformance
+from magenta.pipelines.performance_time_condition_pipelines import TimeEmbbedingPerformance
 from note_seq.performance_lib import BasePerformance
 from note_seq.performance_lib import NotePerformance
 from note_seq.performance_lib import TooManyDurationStepsError
