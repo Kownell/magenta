@@ -179,7 +179,7 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
       entry equal to the note time step
     """
     assert (hasattr(performance,"start_time_offset") and hasattr(performance,"end_time")) ,"To use absolutely time embbeding, performance mast have start time offset and end time"
-    steps_per_second = performance.steps_per_second()
+    steps_per_second = performance.steps_per_second
     current_step = performance.start_time_offset * steps_per_second
     end_step = performance.end_time * steps_per_second + 1
 
