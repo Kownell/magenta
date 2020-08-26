@@ -340,7 +340,7 @@ default_configs = {
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
                 id='multiconditioned_performance_with_dynamics',
-                description='time-conditioned Performance RNN'),
+                description='Density- and pitch-conditioned Performance RNN'),
             note_seq.OneHotEventSequenceEncoderDecoder(
                 note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
             contrib_training.HParams(
@@ -363,7 +363,7 @@ default_configs = {
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
                 id='multiconditioned_performance_with_dynamics',
-                description='time-conditioned Performance RNN'),
+                description='Density- and pitch-conditioned Performance RNN'),
             note_seq.OneHotEventSequenceEncoderDecoder(
                 note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
             contrib_training.HParams(
