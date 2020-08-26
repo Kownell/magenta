@@ -4,7 +4,7 @@ from note_seq import constants
 from note_seq import encoder_decoder
 from note_seq.performance_lib import PerformanceEvent
 import math
-
+import numbers
 SPRITED = 0
 
 class TimeEmbbedingPerformance(Performance):
