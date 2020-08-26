@@ -339,7 +339,7 @@ default_configs = {
     'timeconditioned_performance_with_dynamics':
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
-                id='timeconditioned_performance_with_dynamics',
+                id='multiconditioned_performance_with_dynamics',
                 description='time-conditioned Performance RNN'),
             note_seq.OneHotEventSequenceEncoderDecoder(
                 note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
@@ -362,7 +362,7 @@ default_configs = {
     'timeconditioned_performance_with_dynamics_generate':
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
-                id='timeconditioned_performance_with_dynamics',
+                id='multiconditioned_performance_with_dynamics',
                 description='time-conditioned Performance RNN'),
             note_seq.OneHotEventSequenceEncoderDecoder(
                 note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
