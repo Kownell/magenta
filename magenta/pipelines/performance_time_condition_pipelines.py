@@ -84,7 +84,7 @@ class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
     self._max_dulation = max_dulation
     self._encoder = encoder_decoder.OneHotEventSequenceEncoderDecoder(
         self.AbsoluteTimeOneHotEncoding(time_embbeding_bin))
- @property
+  @property
   def default_value(self):
     return DEFAULT_ABSOLUTE_TIME
 
@@ -165,7 +165,7 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
     """
     self._encoder = encoder_decoder.OneHotEventSequenceEncoderDecoder(
         self.RelativeTimeOneHotEncoding(time_embbeding_bin))
- @property
+  @property
   def default_value(self):
     return DEFAULT_RERATIVE_TIME
 
@@ -249,7 +249,7 @@ class GenerateRelativeTimePerformanceControlSignal(PerformanceControlSignal):
         self.GenerateRelativeTimeOneHotEncoding(time_embbeding_bin))
     self._max_time=max_time
 
- @property
+  @property
   def default_value(self):
     return DEFAULT_RERATIVE_TIME
 
