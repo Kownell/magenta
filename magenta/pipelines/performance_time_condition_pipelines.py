@@ -6,7 +6,8 @@ from note_seq.performance_lib import PerformanceEvent
 import math
 import numbers
 SPRITED = 0
-
+DEFAULT_RERATIVE_TIME = 0.5
+DEFAULT_ABSOLUTE_TIME = 0.5
 class TimeEmbbedingPerformance(Performance):
   """Time embbeding Performance with absolute timing and unknown meter."""
 
@@ -68,7 +69,7 @@ class TimeEmbbedingPerformance(Performance):
 class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
   """Time embbeding performance control signal."""
 
-  name = 'notes_per_second'
+  name = 'absolute_time'
   description = 'Desired number of notes per second.'
 
   def __init__(self, max_dulation, time_embbeding_bin):
@@ -83,6 +84,9 @@ class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
     self._max_dulation = max_dulation
     self._encoder = encoder_decoder.OneHotEventSequenceEncoderDecoder(
         self.AbsoluteTimeOneHotEncoding(time_embbeding_bin))
+ @property
+  def default_value(self):
+    return DEFAULT_ABSOLUTE_TIME
 
   def validate(self, value):
     return isinstance(value, numbers.Number) and value >= 0.0
@@ -147,7 +151,7 @@ class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
 class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
   """Time embbeding performance control signal."""
 
-  name = 'notes_per_second'
+  name = 'relative_time'
   description = 'Desired number of notes per second.'
 
   def __init__(self,time_embbeding_bin):
@@ -161,6 +165,9 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
     """
     self._encoder = encoder_decoder.OneHotEventSequenceEncoderDecoder(
         self.RelativeTimeOneHotEncoding(time_embbeding_bin))
+ @property
+  def default_value(self):
+    return DEFAULT_RERATIVE_TIME
 
   def validate(self, value):
     return isinstance(value, numbers.Number) and value >= 0.0
@@ -226,7 +233,7 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
 class GenerateRelativeTimePerformanceControlSignal(PerformanceControlSignal):
   """Time embbeding performance control signal."""
 
-  name = 'notes_per_second'
+  name = 'rerative_time_generate'
   description = 'Desired number of notes per second.'
 
   def __init__(self,time_embbeding_bin,max_time):
@@ -241,6 +248,11 @@ class GenerateRelativeTimePerformanceControlSignal(PerformanceControlSignal):
     self._encoder = encoder_decoder.OneHotEventSequenceEncoderDecoder(
         self.GenerateRelativeTimeOneHotEncoding(time_embbeding_bin))
     self._max_time=max_time
+
+ @property
+  def default_value(self):
+    return DEFAULT_RERATIVE_TIME
+
   def validate(self, value):
     return isinstance(value, numbers.Number) and value >= 0.0
 
