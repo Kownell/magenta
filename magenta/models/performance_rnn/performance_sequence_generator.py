@@ -26,7 +26,7 @@ from magenta.pipelines import performance_pipeline
 import note_seq
 from note_seq import performance_controls
 import tensorflow.compat.v1 as tf
-
+import magenta.pipelines.performance_time_condition_pipelines as timepipe
 # This model can leave hanging notes. To avoid cacophony we turn off any note
 # after 5 seconds.
 MAX_NOTE_DURATION_SECONDS = 5.0
