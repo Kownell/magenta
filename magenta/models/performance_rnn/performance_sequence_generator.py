@@ -210,10 +210,16 @@ class PerformanceRnnSequenceGenerator(sequence_generator.BaseSequenceGenerator):
     if self.control_signals:
       control_signal_fns = []
       for control in self.control_signals:
-        control_signal_fns.append(functools.partial(
-            _step_to_value,
-            num_steps=total_steps,
-            values=args[control.name]))
+        if control in timepipe.all_time_embbeding_signals:
+            control_signal_fns.append(functools.partial(
+                _step_to_emb,
+                num_steps=control._max_dulation * self.steps_per_second if hasattr(control._max_dulation) else total_steps,
+            ))
+        else:
+            control_signal_fns.append(functools.partial(
+                _step_to_value,
+                num_steps=total_steps,
+                values=args[control.name]))
         del args[control.name]
       args['control_signal_fns'] = control_signal_fns
     if self.optional_conditioning:
@@ -261,6 +267,9 @@ def _step_to_value(step, num_steps, values):
   index = min(step * num_segments // num_steps, num_segments - 1)
   return values[index]
 
+def _step_to_emb(step, num_steps):
+  """Map step in performance to desired control signal value."""
+  return step / num_steps
 
 def get_generator_map():
   """Returns a map from the generator ID to a SequenceGenerator class creator.

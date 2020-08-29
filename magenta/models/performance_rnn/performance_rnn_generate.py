@@ -29,6 +29,7 @@ import note_seq
 from note_seq.protobuf import generator_pb2
 from note_seq.protobuf import music_pb2
 import tensorflow.compat.v1 as tf
+import magenta.pipelines.performance_time_condition_pipelines as timepipe
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string(
@@ -110,6 +111,9 @@ for control_signal_cls in note_seq.all_performance_control_signals:
   tf.app.flags.DEFINE_string(
       control_signal_cls.name, None, control_signal_cls.description)
 
+for time_emb_cls in timepipe.all_time_embbeding_signals:
+    tf.app.flags.DEFINE_string(
+        time_emb_cls.name, None, time_emb_cls.description)
 
 def get_checkpoint():
   """Get the training dir or checkpoint path to be used by the model."""
@@ -201,7 +205,7 @@ def run_with_flags(generator):
         generate_section.start_time, generate_end_time)
     return
 
-  for control_cls in note_seq.all_performance_control_signals:
+  for control_cls in note_seq.all_performance_control_signals + timepipe.all_time_embbeding_signals:
     if FLAGS[control_cls.name].value is not None and (
         generator.control_signals is None or not any(
             control.name == control_cls.name
