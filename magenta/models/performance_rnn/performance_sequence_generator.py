@@ -214,7 +214,7 @@ class PerformanceRnnSequenceGenerator(sequence_generator.BaseSequenceGenerator):
             control_signal_fns.append(functools.partial(
                 _step_to_emb,
                 num_steps=control._max_dulation * self.steps_per_second if hasattr(control._max_dulation) else total_steps,
-            ))
+                values=args[control.name]))
         else:
             control_signal_fns.append(functools.partial(
                 _step_to_value,
@@ -267,9 +267,9 @@ def _step_to_value(step, num_steps, values):
   index = min(step * num_segments // num_steps, num_segments - 1)
   return values[index]
 
-def _step_to_emb(step, num_steps):
+def _step_to_emb(step, num_steps, values):
   """Map step in performance to desired control signal value."""
-  return step / num_steps
+  return (step / num_steps) ** values
 
 def get_generator_map():
   """Returns a map from the generator ID to a SequenceGenerator class creator.
