@@ -6,8 +6,8 @@ from note_seq.performance_lib import PerformanceEvent
 import math
 import numbers
 SPRITED = 0
-DEFAULT_RERATIVE_TIME = 1
-DEFAULT_ABSOLUTE_TIME = 1
+DEFAULT_RERATIVE_TIME = 0.5
+DEFAULT_ABSOLUTE_TIME = 0.5
 class TimeEmbbedingPerformance(Performance):
   """Time embbeding Performance with absolute timing and unknown meter."""
 
