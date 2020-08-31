@@ -210,7 +210,7 @@ class PerformanceRnnSequenceGenerator(sequence_generator.BaseSequenceGenerator):
     if self.control_signals:
       control_signal_fns = []
       for control in self.control_signals:
-        if control in timepipe.all_time_embbeding_signals:
+        if any(control.name == time_emb_cls.name for time_emb_cls in timepipe.all_time_embbeding_signals):
             tf.logging.warning("############time_emb used#############")
             control_signal_fns.append(functools.partial(
                 _step_to_emb,
