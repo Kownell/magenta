@@ -211,7 +211,7 @@ class PerformanceRnnSequenceGenerator(sequence_generator.BaseSequenceGenerator):
       control_signal_fns = []
       for control in self.control_signals:
         if control in timepipe.all_time_embbeding_signals:
-             tf.logging.warning("############time_emb used#############")
+            tf.logging.warning("############time_emb used#############")
             control_signal_fns.append(functools.partial(
                 _step_to_emb,
                 num_steps=control._max_dulation * self.steps_per_second if hasattr(control._max_dulation) else total_steps,
