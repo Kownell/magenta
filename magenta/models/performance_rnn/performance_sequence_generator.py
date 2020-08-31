@@ -270,8 +270,9 @@ def _step_to_value(step, num_steps, values):
 
 def _step_to_emb(step, num_steps, values):
   """Map step in performance to desired control signal value."""
+  assert len(values) == 1
   step = min(step,num_steps-1)
-  return (step / num_steps) ** values
+  return (step / num_steps) ** values[0]
 
 def get_generator_map():
   """Returns a map from the generator ID to a SequenceGenerator class creator.
