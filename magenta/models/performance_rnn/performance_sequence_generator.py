@@ -271,6 +271,8 @@ def _step_to_value(step, num_steps, values):
 def _step_to_emb(step, num_steps, values):
   """Map step in performance to desired control signal value."""
   step = min(step,num_steps-1)
+  if step % 20 == 0:
+      print('\%d' % step, end='')
   return step / num_steps # ** values
 
 def get_generator_map():
