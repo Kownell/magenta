@@ -384,7 +384,7 @@ default_configs = {
     'relative_time_cond_performance_with_dynamics':
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
-                id='multiconditioned_performance_with_dynamics',
+                id='density_conditioned_performance_with_dynamics',
                 description='Density- and pitch-conditioned Performance RNN'),
             note_seq.OneHotEventSequenceEncoderDecoder(
                 note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
