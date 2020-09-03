@@ -378,7 +378,26 @@ default_configs = {
                     window_size_seconds=3.0,
                     density_bin_ranges=[1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0]),
                 timepipe.RelativeTimePerformanceControlSignal(
-                    time_embbeding_bin = 64
+                    time_embbeding_bin = 32
+                )
+            ]),
+    'relative_time_cond_performance_with_dynamics':
+        PerformanceRnnConfig(
+            generator_pb2.GeneratorDetails(
+                id='multiconditioned_performance_with_dynamics',
+                description='Density- and pitch-conditioned Performance RNN'),
+            note_seq.OneHotEventSequenceEncoderDecoder(
+                note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
+            contrib_training.HParams(
+                batch_size=64,
+                rnn_layer_sizes=[512, 512, 512],
+                dropout_keep_prob=1.0,
+                clip_norm=3,
+                learning_rate=0.001),
+            num_velocity_bins=32,
+            control_signals=[
+                timepipe.RelativeTimePerformanceControlSignal(
+                    time_embbeding_bin = 32
                 )
             ])
 }
