@@ -1,11 +1,11 @@
 from note_seq import Performance
 from note_seq.performance_controls import PerformanceControlSignal
-from note_seq import constants
+#from note_seq import constants
 from note_seq import encoder_decoder
 from note_seq.performance_lib import PerformanceEvent
 import math
 import numbers
-SPRITED = 0
+#SPRITED = 0
 DEFAULT_RERATIVE_TIME = 1.0
 DEFAULT_ABSOLUTE_TIME = 1.0
 class TimeEmbbedingPerformance(Performance):
@@ -37,17 +37,17 @@ class TimeEmbbedingPerformance(Performance):
           `steps_per_second` is specified.
     """
     if hasattr(quantized_sequence,"subsequence_info.start_time_offset"):
-        self._start_time_offset = quantized_sequence.subsequence_info.start_time_offset
-        SPRITED += 1
-        if SPRITED % 100 == 0:
-            print("\r{0}".format(SPRITED), end="")
+      self._start_time_offset = quantized_sequence.subsequence_info.start_time_offset
+      # SPRITED += 1
+      # if SPRITED % 100 == 0:
+      #   print("\r{0}".format(SPRITED), end="")
     else:
-        self._start_time_offset = 0.0
+      self._start_time_offset = 0.0
 
     if hasattr(quantized_sequence,"subsequence_info.end_time_offset"):
-        self._end_time = quantized_sequence.subsequence_info.end_time_offset + self._start_time_offset + quantized_sequence.total_time
+      self._end_time = quantized_sequence.subsequence_info.end_time_offset + self._start_time_offset + quantized_sequence.total_time
     else:
-        self._end_time = self._start_time_offset + quantized_sequence.total_time
+      self._end_time = self._start_time_offset + quantized_sequence.total_time
 
 
     super(TimeEmbbedingPerformance, self).__init__(
@@ -61,10 +61,10 @@ class TimeEmbbedingPerformance(Performance):
 
   @property
   def start_time_offset(self):
-      return self._start_time_offset
+    return self._start_time_offset
   @property
   def end_time(self):
-      return self._end_time
+    return self._end_time
 
 class AbsoluteTimePerformanceControlSignal(PerformanceControlSignal):
   """Time embbeding performance control signal."""

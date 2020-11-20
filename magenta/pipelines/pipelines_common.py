@@ -61,7 +61,7 @@ class RandomPartition(pipeline.Pipeline):
     return [statistics.Counter(increment_partition + '_count', 1)]
 
 
-def make_sequence_example(inputs, labels):
+def make_sequence_example(inputs, labels, one_hot_tags):
   """Returns a SequenceExample for the given inputs and labels.
 
   Args:
@@ -71,18 +71,28 @@ def make_sequence_example(inputs, labels):
   Returns:
     A tf.train.SequenceExample containing inputs and labels.
   """
+  if one_hot_tags is not None:
+    tag_features = [
+      tf.train.Feature(int64_list=tf.train.Int64List(value=tag_))
+      for tag_ in one_hot_tags]
+  else:
+    tag_features = tf.train.Feature(int64_list=tf.train.Int64List(value=None))
+
   input_features = [
       tf.train.Feature(float_list=tf.train.FloatList(value=input_))
       for input_ in inputs]
+
   label_features = []
   for label in labels:
     if isinstance(label, numbers.Number):
       label = [label]
     label_features.append(
         tf.train.Feature(int64_list=tf.train.Int64List(value=label)))
+
   feature_list = {
       'inputs': tf.train.FeatureList(feature=input_features),
-      'labels': tf.train.FeatureList(feature=label_features)
+      'labels': tf.train.FeatureList(feature=label_features),
+      'tags': tf.train.FeatureList(feature=tag_features)
   }
   feature_lists = tf.train.FeatureLists(feature_list=feature_list)
   return tf.train.SequenceExample(feature_lists=feature_lists)
