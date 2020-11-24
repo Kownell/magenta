@@ -53,7 +53,7 @@ flags.DEFINE_list('csv',None,'path of tag csv')
 def main(unused_argv):
   tf.logging.set_verbosity(FLAGS.log)
 
-  assert (FLAGS.tags is not None) and ( FLAGS.csv is None ) ,'if tags is used, csv must be required'
+  assert not (FLAGS.tags is not None) and ( FLAGS.csv is None ) ,'if tags is used, csv must be required'
 
   pipeline_instance = performance_pipeline.get_pipeline(
       min_events=32,
