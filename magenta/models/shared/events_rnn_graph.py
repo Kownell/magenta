@@ -120,7 +120,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
     elif mode == 'generate':
       inputs = tf.placeholder(tf.float32, [hparams.batch_size, None,
                                            input_size])
-    tf.logging.info('#############################tags!',tags)
+    tf.logging.info('#############################tags!',tags,inputs,labels)
     if isinstance(encoder_decoder,
                   note_seq.OneHotIndexEventSequenceEncoderDecoder):
       expanded_inputs = tf.one_hot(
