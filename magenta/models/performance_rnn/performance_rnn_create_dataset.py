@@ -27,7 +27,6 @@ from magenta.pipelines import performance_pipeline
 from magenta.pipelines import pipeline
 import tensorflow.compat.v1 as tf
 
-tf.logging.basicConfig(level=tf.logging.DEBUG)
 flags = tf.app.flags
 FLAGS = tf.app.flags.FLAGS
 flags.DEFINE_string(
