@@ -72,7 +72,7 @@ def make_sequence_example(inputs, labels, tags):
     A tf.train.SequenceExample containing inputs and labels.
   """
   tag_features = [tf.train.Feature(int64_list=tf.train.Int64List(value=tags))]*len(inputs)
-
+  tf.logging.debug(tags)
   input_features = [
       tf.train.Feature(float_list=tf.train.FloatList(value=input_))
       for input_ in inputs]
