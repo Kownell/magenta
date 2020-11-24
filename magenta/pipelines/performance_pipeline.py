@@ -50,7 +50,6 @@ class EncoderPipeline(pipeline.Pipeline):
     self._control_signals = config.control_signals
     self._optional_conditioning = config.optional_conditioning
     self._global_condition = config.global_condition
-    if self._global_condition is not None:
 
   def transform(self, performance):
 
