@@ -71,10 +71,7 @@ def make_sequence_example(inputs, labels, tags):
   Returns:
     A tf.train.SequenceExample containing inputs and labels.
   """
-  if tags is not None:
-    tag_features =  tf.train.Feature(int64_list=tf.train.Int64List(value=tags))
-  else:
-    tag_features = tf.train.Feature(int64_list=tf.train.Int64List(value=None))
+  tag_features = [tf.train.Feature(int64_list=tf.train.Int64List(value=tags))]*len(inputs)
 
   input_features = [
       tf.train.Feature(float_list=tf.train.FloatList(value=input_))
