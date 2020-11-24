@@ -62,7 +62,11 @@ class EncoderPipeline(pipeline.Pipeline):
   def transform(self, performance):
 
     if self._df is not None:
-      one_hot_tags = get_tags_one_hot(self._df.loc[os.path.basename(performance.file_name)],self._tag_lens)
+      if performance.file_name in self._df.index:
+        file_name = performance.file_name
+      else:
+        file_name = "others"
+      one_hot_tags = get_tags_one_hot(self._df.loc[os.path.basename(file_name)],self._tag_lens)
     else:
       one_hot_tags = None
     if self._control_signals:
@@ -304,6 +308,7 @@ def read_tag_csv(csv,tags):
       df = pd.concat([df,df_tmp])
 
   df = df.set_index('file name')
+  df.loc["others"] = None
 
   if tags is None:
     tags = df.columns
