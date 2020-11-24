@@ -51,7 +51,7 @@ class EncoderPipeline(pipeline.Pipeline):
     self._optional_conditioning = config.optional_conditioning
     self._global_condition = config.global_condition
     if self._global_condition is not None:
-      tf.logging.INFO('use global condition')
+      tf.logging.log('use global condition')
 
   def transform(self, performance):
 
