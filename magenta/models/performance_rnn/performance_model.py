@@ -19,7 +19,7 @@ import functools
 
 from magenta.contrib import training as contrib_training
 from magenta.models.shared import events_rnn_model
-from magenta.models.global_condition import GlobalConditioning
+from magenta.models.performance_rnn.global_condition import GlobalConditioning
 import note_seq
 from note_seq.protobuf import generator_pb2
 import magenta.pipelines.performance_time_condition_pipelines as timepipe
