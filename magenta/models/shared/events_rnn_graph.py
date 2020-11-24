@@ -142,7 +142,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None,input_tags
           tag = tf.reshape(tf.slice(tags,[0,0,i],[-1,-1,1]),[hparams.batch_size,-1])
           tag_emb = embedding_layers[0](tag)
         elif mode == 'generate':
-          tag_emb = embedding_layers[0](tf.constant(tags[i]))
+          tag_emb = embedding_layers[0](tf.constant(input_tags[i]))
         expanded_inputs = tf.add(expanded_inputs,tag_emb)
 
     dropout_keep_prob = 1.0 if mode == 'generate' else hparams.dropout_keep_prob
