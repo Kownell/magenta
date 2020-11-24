@@ -20,6 +20,8 @@ from magenta.contrib import rnn as contrib_rnn
 import note_seq
 import numpy as np
 import tensorflow.compat.v1 as tf
+from tensorflow.compat.v1 import keras
+from tensorflow.compat.v1.keras import layers
 import tf_slim
 
 rnn = tf.nn.rnn_cell
@@ -120,7 +122,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
     elif mode == 'generate':
       inputs = tf.placeholder(tf.float32, [hparams.batch_size, None,
                                            input_size])
-    tf.logging.info('#############################tags!',tf.shape(tags)[2])
+
     if isinstance(encoder_decoder,
                   note_seq.OneHotIndexEventSequenceEncoderDecoder):
       expanded_inputs = tf.one_hot(
@@ -128,6 +130,16 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
           encoder_decoder.input_depth)
     else:
       expanded_inputs = inputs
+    if config.global_condition is not None:
+      embedding_layers = []
+      for tag_len in tag_lens:
+        embedding_layers.append(layers.Embedding(tag_len ,input_size))
+
+      for i in range(0,tag_size):
+        tf.logging.info("tag embed used")
+        tag = tf.reshape(tf.slice(tags,[0,0,i],[-1,-1,1]),[hparams.batch_size,-1])
+        tag_emb = embedding_layers[0](tag)
+        expanded_inputs = tf.add(expanded_inputs,tag_emb)
 
     dropout_keep_prob = 1.0 if mode == 'generate' else hparams.dropout_keep_prob
 
