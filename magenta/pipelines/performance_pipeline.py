@@ -65,6 +65,7 @@ class EncoderPipeline(pipeline.Pipeline):
       if performance.file_name in self._df.index:
         file_name = performance.file_name
       else:
+        tf.logging.warn("filename not in tags csv file use other")
         file_name = 'others'
       one_hot_tags = get_tags_one_hot(self._df.loc[os.path.basename(file_name)],self._tag_lens)
     else:
