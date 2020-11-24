@@ -73,10 +73,10 @@ def make_sequence_example(inputs, labels, one_hot_tags):
   """
   if one_hot_tags is not None:
     tag_features = [
-      tf.train.Feature(int64_list=tf.train.Int64List(value=tag_))
+      tf.train.Feature(int64_list=tf.train.FloatList(value=tag_))
       for tag_ in one_hot_tags]
   else:
-    tag_features = tf.train.Feature(int64_list=tf.train.Int64List(value=None))
+    tag_features = tf.train.Feature(int64_list=tf.train.FloatList(value=None))
 
   input_features = [
       tf.train.Feature(float_list=tf.train.FloatList(value=input_))
