@@ -45,5 +45,8 @@ class GlobalConditioning():
       filename = "others"
     return list(self._df.loc[os.path.basename(filename)])
 
+  def tag_size(self):
+    return len(self._tag_lens)
+
   def tag_lens(self):
     return self._tag_lens

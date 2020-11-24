@@ -98,6 +98,11 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
   input_size = encoder_decoder.input_size
   num_classes = encoder_decoder.num_classes
   no_event_label = encoder_decoder.default_event_label
+  if config.global_condition is not None:
+    tag_size = config.global_condition.tag_size()
+    tag_lens = config.global_condition.tag_lens()
+  else:
+    tag_size = 1
 
   def build():
     """Builds the Tensorflow graph."""
@@ -108,14 +113,14 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
         label_shape = []
       else:
         label_shape = [len(no_event_label)]
-      inputs, labels, lengths = magenta.common.get_padded_batch(
-          sequence_example_file_paths, hparams.batch_size, input_size,
+      inputs, labels, tags,lengths = magenta.common.get_padded_batch(
+          sequence_example_file_paths, hparams.batch_size, input_size, tag_size,
           label_shape=label_shape, shuffle=mode == 'train')
 
     elif mode == 'generate':
       inputs = tf.placeholder(tf.float32, [hparams.batch_size, None,
                                            input_size])
-
+    tf.logging.info(tags)
     if isinstance(encoder_decoder,
                   note_seq.OneHotIndexEventSequenceEncoderDecoder):
       expanded_inputs = tf.one_hot(

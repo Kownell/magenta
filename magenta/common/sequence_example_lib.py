@@ -38,7 +38,7 @@ def _shuffle_inputs(input_tensors, capacity, min_after_dequeue, num_threads):
   return output_tensors
 
 
-def get_padded_batch(file_list, batch_size, input_size, label_shape=None,
+def get_padded_batch(file_list, batch_size, input_size,tag_size, label_shape=None,
                      num_enqueuing_threads=4, shuffle=False):
   """Reads batches of SequenceExamples from TFRecords and pads them.
 
@@ -68,6 +68,8 @@ def get_padded_batch(file_list, batch_size, input_size, label_shape=None,
   _, serialized_example = reader.read(file_queue)
 
   sequence_features = {
+      'tags': tf.FixedLenSequenceFeature(shape=[tag_size],
+                                           dtype=tf.int64),
       'inputs': tf.FixedLenSequenceFeature(shape=[input_size],
                                            dtype=tf.float32),
       'labels': tf.FixedLenSequenceFeature(shape=label_shape or [],
@@ -77,7 +79,7 @@ def get_padded_batch(file_list, batch_size, input_size, label_shape=None,
       serialized_example, sequence_features=sequence_features)
 
   length = tf.shape(sequence['inputs'])[0]
-  input_tensors = [sequence['inputs'], sequence['labels'], length]
+  input_tensors = [sequence['inputs'], sequence['labels'], sequence['tags'],length]
 
   if shuffle:
     if num_enqueuing_threads < 2:
