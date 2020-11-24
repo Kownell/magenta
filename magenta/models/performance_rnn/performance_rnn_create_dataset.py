@@ -46,7 +46,7 @@ flags.DEFINE_string(
     'The threshold for what messages will be logged DEBUG, INFO, WARN, ERROR, '
     'or FATAL.')
 flags.DEFINE_list('tags',None,'tags which used as global conditioning')
-flags.DEFINE_list('csv',None,'path of tag csv')
+flags.DEFINE_string('csv',None,'path of tag csv')
 
 
 
