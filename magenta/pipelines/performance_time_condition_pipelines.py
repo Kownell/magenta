@@ -225,7 +225,6 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
       return 0.0
 
     def encode_event(self, event):
-      print(math.floor(event * self._time_embbeding_bin))
       return math.floor(event * self._time_embbeding_bin)
 
     def decode_event(self, index):
