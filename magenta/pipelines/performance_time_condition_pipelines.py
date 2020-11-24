@@ -198,7 +198,7 @@ class RelativeTimePerformanceControlSignal(PerformanceControlSignal):
       absolute_time_sequence.append(current_step/end_step)
       if event.event_type == PerformanceEvent.TIME_SHIFT:
         current_step += event.event_value
-
+    print(absolute_time_sequence)
     return absolute_time_sequence
 
   class RelativeTimeOneHotEncoding(encoder_decoder.OneHotEncoding):
