@@ -67,7 +67,7 @@ def make_rnn_cell(rnn_layer_sizes,
   return cell
 
 
-def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
+def get_build_graph_fn(mode, config, sequence_example_file_paths=None,tags=None):
   """Returns a function that builds the TensorFlow graph.
 
   Args:
@@ -130,6 +130,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
           encoder_decoder.input_depth)
     else:
       expanded_inputs = inputs
+
     if config.global_condition is not None:
       embedding_layers = []
       for tag_len in tag_lens:
@@ -137,8 +138,11 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None):
 
       for i in range(0,tag_size):
         tf.logging.info("tag embed used")
-        tag = tf.reshape(tf.slice(tags,[0,0,i],[-1,-1,1]),[hparams.batch_size,-1])
-        tag_emb = embedding_layers[0](tag)
+        if mode in ('train', 'eval'):
+          tag = tf.reshape(tf.slice(tags,[0,0,i],[-1,-1,1]),[hparams.batch_size,-1])
+          tag_emb = embedding_layers[0](tag)
+        elif mode == 'generate':
+          tag_emb = embedding_layers[0](tf.constant(tags[i]))
         expanded_inputs = tf.add(expanded_inputs,tag_emb)
 
     dropout_keep_prob = 1.0 if mode == 'generate' else hparams.dropout_keep_prob

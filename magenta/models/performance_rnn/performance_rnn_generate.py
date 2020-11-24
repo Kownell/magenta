@@ -105,6 +105,11 @@ tf.app.flags.DEFINE_string(
     'Comma-separated list of `name=value` pairs. For each pair, the value of '
     'the hyperparameter named `name` is set to `value`. This mapping is merged '
     'with the default hyperparameters.')
+tf.app.flags.DEFINE_string(
+    'tags', '{}',
+    'Comma-separated list of `name=value` pairs. For each pair, the value of '
+    'the hyperparameter named `name` is set to `value`. This mapping is merged '
+    'with the default hyperparameters.')
 
 # Add flags for all performance control signals.
 for control_signal_cls in note_seq.all_performance_control_signals:
@@ -264,12 +269,15 @@ def main(unused_argv):
   config_id = bundle.generator_details.id if bundle else FLAGS.config
   config = performance_model.default_configs[config_id]
   config.hparams.parse(FLAGS.hparams)
+
+  tags=ast.literal_eval(FLAGS.tags)
+  tags=config.global_condition.get_ids(tags)
   # Having too large of a batch size will slow generation down unnecessarily.
   config.hparams.batch_size = min(
       config.hparams.batch_size, FLAGS.beam_size * FLAGS.branch_factor)
 
   generator = performance_sequence_generator.PerformanceRnnSequenceGenerator(
-      model=performance_model.PerformanceRnnModel(config),
+      model=performance_model.PerformanceRnnModel(config,tags),
       details=config.details,
       steps_per_second=config.steps_per_second,
       num_velocity_bins=config.num_velocity_bins,

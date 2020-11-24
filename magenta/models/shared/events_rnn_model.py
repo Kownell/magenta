@@ -67,7 +67,7 @@ class EventSequenceRnnModel(model.BaseModel):
   at a later time.
   """
 
-  def __init__(self, config):
+  def __init__(self, config ,tags):
     """Initialize the EventSequenceRnnModel.
 
     Args:
@@ -76,9 +76,10 @@ class EventSequenceRnnModel(model.BaseModel):
     """
     super(EventSequenceRnnModel, self).__init__()
     self._config = config
+    self._tags = tags
 
   def _build_graph_for_generation(self):
-    events_rnn_graph.get_build_graph_fn('generate', self._config)()
+    events_rnn_graph.get_build_graph_fn('generate', self._config,tags=self._tags)()
 
   def _batch_size(self):
     """Extracts the batch size from the graph."""
