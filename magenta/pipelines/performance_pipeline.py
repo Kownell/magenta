@@ -30,15 +30,11 @@ from note_seq.performance_lib import TooManyDurationStepsError
 from note_seq.performance_lib import TooManyTimeShiftStepsError
 from note_seq.protobuf import music_pb2
 import tensorflow.compat.v1 as tf
-import pandas as pd
-import os
-import re
-
 
 class EncoderPipeline(pipeline.Pipeline):
   """A Pipeline that converts performances to a model specific encoding."""
 
-  def __init__(self, config, name,tags,csv):
+  def __init__(self, config, name):
     """Constructs an EncoderPipeline.
 
     Args:
@@ -53,23 +49,16 @@ class EncoderPipeline(pipeline.Pipeline):
     self._encoder_decoder = config.encoder_decoder
     self._control_signals = config.control_signals
     self._optional_conditioning = config.optional_conditioning
-
-    if csv is not None:
-      self._df, self._tag_lens = read_tag_csv(csv,tags)
-    else:
-      self._df = None
+    self._global_condition = config.global_condition
+    if self._global_condition is not None:
+      tf.logging.INFO('use global condition')
 
   def transform(self, performance):
 
-    if self._df is not None:
-      if performance.file_name in self._df.index:
-        file_name = performance.file_name
-      else:
-        tf.logging.warn("filename not in tags csv file use other")
-        file_name = 'others'
-      one_hot_tags = get_tags_one_hot(self._df.loc[os.path.basename(file_name)],self._tag_lens)
+    if self._global_condition is not None:
+      tags = self._global_condition.filename_to_ids(performance.file_name)
     else:
-      one_hot_tags = None
+      tags = None
     if self._control_signals:
       # Encode conditional on control signals.
       control_sequences = []
@@ -91,7 +80,7 @@ class EncoderPipeline(pipeline.Pipeline):
     else:
       # Encode unconditional.
       encoded = [self._encoder_decoder.encode(performance)]
-    return [pipelines_common.make_sequence_example(*enc,one_hot_tags=one_hot_tags) for enc in encoded]
+    return [pipelines_common.make_sequence_example(*enc,tags=tags) for enc in encoded]
 
 
 class PerformanceExtractor(pipeline.Pipeline):
@@ -119,7 +108,7 @@ class PerformanceExtractor(pipeline.Pipeline):
     return performances
 
 
-def get_pipeline(config, min_events, max_events, eval_ratio,tags,csv):
+def get_pipeline(config, min_events, max_events, eval_ratio):
   """Returns the Pipeline instance which creates the RNN dataset.
 
   Args:
@@ -161,7 +150,7 @@ def get_pipeline(config, min_events, max_events, eval_ratio,tags,csv):
         num_velocity_bins=config.num_velocity_bins,
         note_performance=config.note_performance,
         name='PerformanceExtractor_' + mode)
-    encoder_pipeline = EncoderPipeline(config, name='EncoderPipeline_' + mode,tags=tags,csv=csv)
+    encoder_pipeline = EncoderPipeline(config, name='EncoderPipeline_' + mode)
 
     dag[sustain_pipeline] = partitioner[mode + '_performances']
     dag[stretch_pipeline] = sustain_pipeline
@@ -289,55 +278,3 @@ def extract_performances(
             performance.num_steps // steps_per_bar)
 
   return performances, list(stats.values())
-
-def read_tag_csv(csv,tags):
-    #in
-    # csv : directory whitch have tag csv files
-    # tags : header name in use tags
-    #
-    #out
-    #pandas_dataflame : header {filename, tags..}
-    #element_num : list of tags element num
-
-    #read csv
-  df = pd.DataFrame()
-  for root , _ , files in os.walk(csv):
-    for file in files:
-      if not re.fullmatch(r'.*csv',file):
-        continue
-      df_tmp = pd.read_csv(os.path.join(root,file),encoding='shift-jis')
-      df = pd.concat([df,df_tmp])
-
-  df = df.set_index('file name')
-  df.loc['others'] = None
-
-  if tags is None:
-    tags = df.columns
-  else:
-    #reform csv
-    for tag in tags:
-      assert tag in df.columns, '{} isnt in header !'.format(tag)
-    df = df[tags]#.astype(str)
-
-  #replace tag element to id
-  tag_lens = []
-  for tag in tags:
-    tag_lens.append(len(df[tag].unique()))
-    for index , elm in enumerate(df[tag].unique()):
-      df = df.replace({tag: {elm:str(index)}})
-    df[tag] = df[tag].astype(int)
-  return df ,tag_lens
-
-def get_tags_one_hot(series,tag_lens):
-  #in
-  #series : .*.mid s series
-  #tag_len : all clms elm num
-  #
-  #out
-  #[[tag1 onthot],[tag 2 one hot],...]]
-  one_hot_tags = []
-  for i ,tag_len in enumerate(tag_lens):
-    one_hot = [0.0] * tag_len
-    one_hot[series[i]] = 1.0
-    one_hot_tags.append(one_hot)
-  return one_hot_tags

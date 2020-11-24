@@ -61,7 +61,7 @@ class RandomPartition(pipeline.Pipeline):
     return [statistics.Counter(increment_partition + '_count', 1)]
 
 
-def make_sequence_example(inputs, labels, one_hot_tags):
+def make_sequence_example(inputs, labels, tags):
   """Returns a SequenceExample for the given inputs and labels.
 
   Args:
@@ -71,12 +71,10 @@ def make_sequence_example(inputs, labels, one_hot_tags):
   Returns:
     A tf.train.SequenceExample containing inputs and labels.
   """
-  if one_hot_tags is not None:
-    tag_features = [
-      tf.train.Feature(float_list=tf.train.FloatList(value=tag_))
-      for tag_ in one_hot_tags]
+  if tags is not None:
+    tag_features =  tf.train.Feature(int64_list=tf.train.Int64List(value=tags))
   else:
-    tag_features = tf.train.Feature(float_list=tf.train.FloatList(value=None))
+    tag_features = tf.train.Feature(int64_list=tf.train.Int64List(value=None))
 
   input_features = [
       tf.train.Feature(float_list=tf.train.FloatList(value=input_))

@@ -45,23 +45,17 @@ flags.DEFINE_string(
     'log', 'INFO',
     'The threshold for what messages will be logged DEBUG, INFO, WARN, ERROR, '
     'or FATAL.')
-flags.DEFINE_list('tags',None,'tags which used as global conditioning')
-flags.DEFINE_string('csv',None,'path of tag csv')
 
 
 
 def main(unused_argv):
   tf.logging.set_verbosity(FLAGS.log)
 
-  assert (FLAGS.tags is None) or ( FLAGS.csv is not None ) ,'if tags is used, csv must be required'
-
   pipeline_instance = performance_pipeline.get_pipeline(
       min_events=32,
       max_events=512,
       eval_ratio=FLAGS.eval_ratio,
-      config=performance_model.default_configs[FLAGS.config],
-      tags=FLAGS.tags,
-      csv=FLAGS.csv)
+      config=performance_model.default_configs[FLAGS.config])
 
   input_dir = os.path.expanduser(FLAGS.input)
   output_dir = os.path.expanduser(FLAGS.output_dir)

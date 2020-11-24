@@ -19,6 +19,7 @@ import functools
 
 from magenta.contrib import training as contrib_training
 from magenta.models.shared import events_rnn_model
+from magenta.models.global_condition import GlobalConditioning
 import note_seq
 from note_seq.protobuf import generator_pb2
 import magenta.pipelines.performance_time_condition_pipelines as timepipe
@@ -166,7 +167,7 @@ class PerformanceRnnConfig(events_rnn_model.EventSequenceRnnConfig):
 
   def __init__(self, details, encoder_decoder, hparams, num_velocity_bins=0,
                control_signals=None, optional_conditioning=False,
-               note_performance=False):
+               note_performance=False,global_condition=None):
     if control_signals is not None:
       control_encoder = note_seq.MultipleEventSequenceEncoder(
           [control.encoder for control in control_signals])
@@ -181,7 +182,7 @@ class PerformanceRnnConfig(events_rnn_model.EventSequenceRnnConfig):
     self.control_signals = control_signals
     self.optional_conditioning = optional_conditioning
     self.note_performance = note_performance
-
+    self.global_condition = global_condition
 
 default_configs = {
     'performance':
@@ -399,5 +400,28 @@ default_configs = {
                 timepipe.RelativeTimePerformanceControlSignal(
                     time_embbeding_bin = 32
                 )
-            ])
+            ]),
+    'time_cond_and_note_dence_with_tags_performance_with_dynamics':
+        PerformanceRnnConfig(
+            generator_pb2.GeneratorDetails(
+                id='multiconditioned_performance_with_dynamics',
+                description='Density- and pitch-conditioned Performance RNN'),
+            note_seq.OneHotEventSequenceEncoderDecoder(
+                note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
+            contrib_training.HParams(
+                batch_size=64,
+                rnn_layer_sizes=[512, 512, 512],
+                dropout_keep_prob=1.0,
+                clip_norm=3,
+                learning_rate=0.001),
+            num_velocity_bins=32,
+            control_signals=[
+                note_seq.NoteDensityPerformanceControlSignal(
+                    window_size_seconds=3.0,
+                    density_bin_ranges=[1.0, 2.0, 4.0, 8.0, 16.0, 32.0, 64.0]),
+                timepipe.RelativeTimePerformanceControlSignal(
+                    time_embbeding_bin = 32
+                )],
+            global_condition=GlobalConditioning(csv='/media/oeda/HDCZ-UT1/data/dataset/tags/',tags=['感情分類'])
+            )
 }
