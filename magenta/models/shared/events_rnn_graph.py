@@ -67,7 +67,7 @@ def make_rnn_cell(rnn_layer_sizes,
   return cell
 
 
-def get_build_graph_fn(mode, config, sequence_example_file_paths=None,tags=None):
+def get_build_graph_fn(mode, config, sequence_example_file_paths=None,input_tags=None):
   """Returns a function that builds the TensorFlow graph.
 
   Args:
