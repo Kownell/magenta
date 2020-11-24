@@ -49,6 +49,7 @@ class TimeEmbbedingPerformance(Performance):
     else:
       self._end_time = self._start_time_offset + quantized_sequence.total_time
 
+    self.file_name = quantized_sequence.file_name
 
     super(TimeEmbbedingPerformance, self).__init__(
         quantized_sequence=quantized_sequence,
