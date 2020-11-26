@@ -55,7 +55,7 @@ class EncoderPipeline(pipeline.Pipeline):
   def transform(self, performance):
 
     if self._global_condition is not None:
-      tags = self._global_condition.filename_to_ids(performance.file_name)
+      tags = self._global_condition.performance_to_ids(performance)
     else:
       tags = None
     if self._control_signals:
