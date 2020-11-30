@@ -441,9 +441,9 @@ default_configs = {
             control_signals=[
                 timepipe.AbsoluteTimePerformanceControlSignal(
                     max_dulation = 30,
-                    time_embbeding_bin = 32
+                    time_embbeding_bin = 40
                 )],
-            global_condition=GlobalConditioning(song_bin=32,max_length=30)
+            global_condition=GlobalConditioning(song_bin=32,max_length=40)
             ),
     'relative_time_and_song_length_performance_with_dynamics':
         PerformanceRnnConfig(
@@ -463,7 +463,7 @@ default_configs = {
                 timepipe.RelativeTimePerformanceControlSignal(
                     time_embbeding_bin = 32
                 )],
-            global_condition=GlobalConditioning(song_bin=32,max_length=30)
+            global_condition=GlobalConditioning(song_bin=32,max_length=40)
             ),
         'absolute_time_and_rerative_time_performance_with_dynamics':
         PerformanceRnnConfig(
@@ -481,7 +481,7 @@ default_configs = {
             num_velocity_bins=32,
             control_signals=[
                 timepipe.AbsoluteTimePerformanceControlSignal(
-                    max_dulation = 30,
+                    max_dulation = 40,
                     time_embbeding_bin = 32),
                 timepipe.RelativeTimePerformanceControlSignal(
                     time_embbeding_bin = 32
