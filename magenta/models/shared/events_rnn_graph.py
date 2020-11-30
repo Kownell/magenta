@@ -103,7 +103,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None,input_tags
   if config.global_condition is not None:
     tag_size = config.global_condition.tag_size()
     tag_lens = config.global_condition.tag_lens()
-    print(tag_lens)
+    print("*****************tag_len:{},tag_size:{}".format(tag_lens,tag_size))
   else:
     tag_size = 1
 
