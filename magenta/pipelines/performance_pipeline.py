@@ -58,6 +58,7 @@ class EncoderPipeline(pipeline.Pipeline):
       tags = self._global_condition.performance_to_ids(performance)
     else:
       tags = None
+    print(tags)
     if self._control_signals:
       # Encode conditional on control signals.
       control_sequences = []
