@@ -31,7 +31,7 @@ class GlobalConditioning():
     #song_length
     if self._song_bin is not None:
       bin = int(math.floor(((performance.end_time + 1 )/ self._max_length)*self._song_bin))
-      assert bin < 32, 'song length is ronger than max_length!'
+      assert bin < self._song_bin, 'song length is ronger than max_length!'
       ids.append(bin)
 
     return ids
@@ -52,7 +52,7 @@ class GlobalConditioning():
     #song_length
     if self._song_bin is not None:
       bin = int(math.floor(((length + 1 )/ self._max_length)*self._song_bin))
-      assert bin < 32, 'song length is ronger than max_length!'
+      assert bin < self._song_bin, 'song length is ronger than max_length!'
       ids.append(bin)
     return ids
 
