@@ -30,7 +30,7 @@ class GlobalConditioning():
       ids += list(self._df.loc[os.path.basename(filename)])
     #song_length
     if self._song_bin is not None:
-      bin = int(math.floor((performance.end_time + 1 )/ self._max_length))
+      bin = int(math.floor(((performance.end_time + 1 )/ self._max_length)*self._song_bin))
       assert bin < 32, 'song length is ronger than max_length!'
       ids.append(bin)
 
@@ -51,7 +51,7 @@ class GlobalConditioning():
       ids += dic_ids
     #song_length
     if self._song_bin is not None:
-      bin = int(math.floor((length + 1 )/ self._max_length))
+      bin = int(math.floor(((length + 1 )/ self._max_length)*self._song_bin))
       assert bin < 32, 'song length is ronger than max_length!'
       ids.append(bin)
     return ids
