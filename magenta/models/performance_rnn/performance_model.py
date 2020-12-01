@@ -440,8 +440,8 @@ default_configs = {
             num_velocity_bins=32,
             control_signals=[
                 timepipe.AbsoluteTimePerformanceControlSignal(
-                    max_dulation = 30,
-                    time_embbeding_bin = 40
+                    max_dulation = 40,
+                    time_embbeding_bin = 32
                 )],
             global_condition=GlobalConditioning(song_bin=32,max_length=40)
             ),
