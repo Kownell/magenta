@@ -105,6 +105,7 @@ def get_build_graph_fn(mode, config, sequence_example_file_paths=None,input_tags
     tag_lens = config.global_condition.tag_lens()
     print("*****************tag_len:{},tag_size:{}".format(tag_lens,tag_size))
   else:
+    print("*****************global_conditions{}".format(config.global_condition))
     tag_size = 1
 
   def build():
