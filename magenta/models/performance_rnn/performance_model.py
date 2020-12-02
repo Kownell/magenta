@@ -465,7 +465,7 @@ default_configs = {
                 )],
             global_condition=GlobalConditioning(song_bin=32,max_length=40)
             ),
-        'absolute_time_and_rerative_time_performance_with_dynamics':
+        'absolute_time_and_relative_time_performance_with_dynamics':
         PerformanceRnnConfig(
             generator_pb2.GeneratorDetails(
                 id='multiconditioned_performance_with_dynamics',
