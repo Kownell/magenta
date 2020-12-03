@@ -271,7 +271,11 @@ def main(unused_argv):
   config.hparams.parse(FLAGS.hparams)
 
   tags=ast.literal_eval(FLAGS.tags)
-  tags=config.global_condition.get_ids(tags,FLAGS.num_steps*0.01)
+  if config.global_condition is not None:
+    tags=config.global_condition.get_ids(tags,FLAGS.num_steps*0.01)
+  else:
+    tags = None
+
   # Having too large of a batch size will slow generation down unnecessarily.
   config.hparams.batch_size = min(
       config.hparams.batch_size, FLAGS.beam_size * FLAGS.branch_factor)
