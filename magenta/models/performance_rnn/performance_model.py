@@ -509,5 +509,28 @@ default_configs = {
                     time_embbeding_bin = 32
                 )],
             global_condition=GlobalConditioning(song_bin=32,max_length=40)
+            ),
+        'time_cond_and_tags_performance_with_dynamics':
+        PerformanceRnnConfig(
+            generator_pb2.GeneratorDetails(
+                id='multiconditioned_performance_with_dynamics',
+                description='Density- and pitch-conditioned Performance RNN'),
+            note_seq.OneHotEventSequenceEncoderDecoder(
+                note_seq.PerformanceOneHotEncoding(num_velocity_bins=32)),
+            contrib_training.HParams(
+                batch_size=64,
+                rnn_layer_sizes=[512, 512, 512],
+                dropout_keep_prob=1.0,
+                clip_norm=3,
+                learning_rate=0.001),
+            num_velocity_bins=32,
+            control_signals=[
+                timepipe.AbsoluteTimePerformanceControlSignal(
+                    max_dulation = 40,
+                    time_embbeding_bin = 32),
+                timepipe.RelativeTimePerformanceControlSignal(
+                    time_embbeding_bin = 32
+                )],
+            global_condition=GlobalConditioning(csv='/media/oeda/HDCZ-UT1/data/dataset/tags/',tags=['感情分類'])
             )
 }
