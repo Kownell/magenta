@@ -83,7 +83,7 @@ def make_sequence_example(inputs, labels, tags):
       label = [label]
     label_features.append(
         tf.train.Feature(int64_list=tf.train.Int64List(value=label)))
-  print(shape(inputs),shape(inputs[0]))
+  print(np.asarray(inputs).shape)
   feature_list = {
       'inputs': tf.train.FeatureList(feature=input_features.reverse()),
       'labels': tf.train.FeatureList(feature=label_features.reverse()),
