@@ -380,7 +380,7 @@ class EventSequenceRnnModel(model.BaseModel):
 
     tf.logging.info('Beam search yields sequence with log-likelihood: %f ',
                     loglik)
-    print(np.asarray(events._events).shape)
+    events._events = reversed(events._events)
     return events
 
   def _evaluate_batch_log_likelihood(self, event_sequences, inputs,
